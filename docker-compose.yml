@@ -82,6 +82,21 @@ services:
       MYSQL_USER: root
       MYSQL_PASSWORD: password
       MYSQL_DATABASE: app_db
+  
+  frontend:
+    build:
+      context: ./frontend  # Path to your frontend directory
+    container_name: frontend-container
+    ports:
+      - "8080:80"
+    depends_on:
+      - login-service
+      - register-service
+    networks:
+      - app-network
 
 volumes:
   db_data:
+networks:
+  app-network:
+    driver: bridge

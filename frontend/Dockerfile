@@ -1,26 +1,18 @@
-# Use an official Node runtime as the base image
-FROM node:16-alpine
+# Use an official Nginx image to serve the frontend
+FROM nginx:alpine
 
-# Set the working directory in the container
-WORKDIR /app
+# Remove the default Nginx configuration
+RUN rm /etc/nginx/conf.d/default.conf
 
-# Copy package.json and package-lock.json
-COPY package*.json ./
+# Copy your custom Nginx configuration to handle your routing
+COPY nginx.conf /etc/nginx/nginx.conf
 
-# Install dependencies
-RUN npm install
+# Copy the frontend files into the Nginx HTML directory
+COPY ./user_login /usr/share/nginx/html/login/
+COPY ./user_register /usr/share/nginx/html/register/
 
-# Copy the rest of the application code
-COPY . .
+# Expose port 80 for the frontend
+EXPOSE 80
 
-# Build the app for production
-RUN npm run build
-
-# Install serve to run the application
-RUN npm install -g serve
-
-# Expose the port the app runs on
-EXPOSE 3000
-
-# Serve the app
-CMD ["serve", "-s", "build", "-l", "3000"]
+# Start Nginx server
+CMD ["nginx", "-g", "daemon off;"]
