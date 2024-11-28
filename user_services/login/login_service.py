@@ -30,12 +30,14 @@ def login():
     query = "SELECT * FROM users WHERE username = %s AND password = %s"
     cursor.execute(query, (username, password))
     user = cursor.fetchone()
-
+    app.redirect
+    
     cursor.close()
     conn.close()
 
     if user:
         return jsonify({"message": "Login successful"}), 200
+    
     else:
         return jsonify({"error": "Invalid username or password"}), 401
 

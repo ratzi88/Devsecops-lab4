@@ -83,20 +83,27 @@ services:
       MYSQL_PASSWORD: password
       MYSQL_DATABASE: app_db
   
+  status-service:
+    build:
+      context: ./order_services/status  
+    container_name: status-container
+    depends_on:
+      - mysql-db
+    ports:
+      - "5005:5005"
+    environment:
+      MYSQL_HOST: mysql-db
+      MYSQL_USER: root
+      MYSQL_PASSWORD: password
+      MYSQL_DATABASE: app_db
+  
   frontend:
     build:
-      context: ./frontend  # Path to your frontend directory
+      context: ./kube-frontend  
     container_name: frontend-container
     ports:
-      - "8080:80"
+      - "3000:80"
     depends_on:
       - login-service
-      - register-service
-    networks:
-      - app-network
-
 volumes:
   db_data:
-networks:
-  app-network:
-    driver: bridge

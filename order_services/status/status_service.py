@@ -9,25 +9,20 @@ db_config = {
     'password': 'password',
     'database': 'app_db'
 }
-@app.route('/list', methods=['GET'])
-def list_products():
-    """
-    Retrieve the list of all products from the database.
-    """
-    # Connect to the database
+@app.route('/status', methods=['GET'])
+def list_status():
     conn = mysql.connector.connect(**db_config)
     cursor = conn.cursor(dictionary=True)
 
-    # Fetch all products
-    query_select = "SELECT * FROM products"
+    query_select = "SELECT * FROM orders"
     cursor.execute(query_select)
-    products = cursor.fetchall()
+    orders = cursor.fetchall()
 
     cursor.close()
     conn.close()
 
-    return jsonify({"products": products}), 200
+    return jsonify({"orders": orders}), 200
 
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=5003)
+    app.run(debug=True, host='0.0.0.0', port=5005)

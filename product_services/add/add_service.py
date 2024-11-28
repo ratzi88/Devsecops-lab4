@@ -42,7 +42,7 @@ def add_product():
     cursor.close()
     conn.close()
 
-    return jsonify({"message": "User registered successfully"}), 201
+    return jsonify({"message": "Poduct registered successfully"}), 201
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5002)
