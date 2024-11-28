@@ -96,6 +96,6 @@ services:
       MYSQL_USER: root
       MYSQL_PASSWORD: password
       MYSQL_DATABASE: app_db
-  
+      
 volumes:
   db_data:

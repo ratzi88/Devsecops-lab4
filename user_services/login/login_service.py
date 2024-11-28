@@ -29,7 +29,6 @@ def login():
     query = "SELECT * FROM users WHERE username = %s AND password = %s"
     cursor.execute(query, (username, password))
     user = cursor.fetchone()
-    app.redirect
     
     cursor.close()
     conn.close()
