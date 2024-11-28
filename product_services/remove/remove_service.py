@@ -1,20 +1,18 @@
 from flask import Flask, request, jsonify
 import mysql.connector
-
+import os
 app = Flask(__name__)
 
 db_config = {
-    'host': 'mysql-db',
-    'user': 'root',
-    'password': 'password',
-    'database': 'app_db'
+    'host': os.getenv('MYSQL_HOST', 'mysql-db'),
+    'user': os.getenv('MYSQL_USER', 'root'),
+    'password': os.getenv('MYSQL_PASSWORD', 'password'),
+    'database': os.getenv('MYSQL_DATABASE', 'app_db')
 }
 
 @app.route('/remove/<string:product_name>', methods=['DELETE'])
 def remove_product(product_name):
-    """
-    Remove a product from the database by its name.
-    """
+
     # Connect to the database
     conn = mysql.connector.connect(**db_config)
     cursor = conn.cursor()

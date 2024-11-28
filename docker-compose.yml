@@ -97,13 +97,5 @@ services:
       MYSQL_PASSWORD: password
       MYSQL_DATABASE: app_db
   
-  frontend:
-    build:
-      context: ./kube-frontend  
-    container_name: frontend-container
-    ports:
-      - "3000:80"
-    depends_on:
-      - login-service
 volumes:
   db_data:

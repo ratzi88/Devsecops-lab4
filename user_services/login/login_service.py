@@ -1,16 +1,15 @@
 from flask import Flask, request, jsonify
+import os
 import mysql.connector
-from flask_cors import CORS 
 
 app = Flask(__name__)
-CORS(app)
 
 # MySQL configuration
 db_config = {
-    'host': 'mysql-db',
-    'user': 'root',
-    'password': 'password',
-    'database': 'app_db'
+    'host': os.getenv('MYSQL_HOST', 'mysql-db'),
+    'user': os.getenv('MYSQL_USER', 'root'),
+    'password': os.getenv('MYSQL_PASSWORD', 'password'),
+    'database': os.getenv('MYSQL_DATABASE', 'app_db')
 }
 
 @app.route('/login', methods=['POST'])

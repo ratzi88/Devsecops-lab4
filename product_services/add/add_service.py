@@ -1,13 +1,13 @@
 from flask import Flask, request, jsonify
 import mysql.connector
-
+import os 
 app = Flask(__name__)
 
 db_config = {
-    'host': 'mysql-db',
-    'user': 'root',
-    'password': 'password',
-    'database': 'app_db'
+    'host': os.getenv('MYSQL_HOST', 'mysql-db'),
+    'user': os.getenv('MYSQL_USER', 'root'),
+    'password': os.getenv('MYSQL_PASSWORD', 'password'),
+    'database': os.getenv('MYSQL_DATABASE', 'app_db')
 }
 @app.route('/add', methods=['POST'])
 def add_product():
@@ -15,10 +15,10 @@ def add_product():
     # Get Product From users
     data = request.json
     product_name = data.get('product_name')
-    product_quentity = data.get('product_quentity')
+    product_quantity = data.get('product_quantity')
     
-    if not product_name or not product_quentity:
-        return jsonify({"error": "Product name and quentity are required"}), 400
+    if not product_name or not product_quantity:
+        return jsonify({"error": "Product name and quantity are required"}), 400
     
     # Connect to the database
     conn = mysql.connector.connect(**db_config)
@@ -35,8 +35,8 @@ def add_product():
         return jsonify({"error": "Product already exists"}), 400
     
     # Insert the new product
-    query_insert = "INSERT INTO products (product_name, product_quentity) VALUES (%s, %s)"
-    cursor.execute(query_insert, (product_name, product_quentity))
+    query_insert = "INSERT INTO products (product_name, product_quantity) VALUES (%s, %s)"
+    cursor.execute(query_insert, (product_name, product_quantity))
     conn.commit()
 
     cursor.close()
